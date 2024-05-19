@@ -78,9 +78,6 @@ class Encoder:
 
 class Decoder:
 
-    INSTRUCTION_LENGTH = 30
-        
-
     @staticmethod
     def decode(encoded) -> dict:
         raw_bytes = Decoder.parse_bytes(encoded)
