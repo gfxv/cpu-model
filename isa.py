@@ -2,27 +2,28 @@ from enum import Enum
 
 
 class OPCODE(str, Enum):
-
-    ORG = "org"
+    ORG = "org" # ? deprecated ?
     LD = "ld"
     ST = "st"
 
     ADD = "add"
     SUB = "sub"
-    MUL = "mul"
+    MUL = "mul" # deprecated ?
     DIV = "div"
     MOD = "mod"
+    INC = "inc"
 
     CMP = "cmp"
     JMP = "jmp"
-    JEQ = "jeq"
-    JNE = "jne"
+    JEQ = "jeq" # depreacated ?
+    JNE = "jne" # deprecated ?
+    JZ = "jz"
 
-    LOOP = "loop"
+    LOOP = "loop" # deprecated
     HLT = "hlt"
 
     def __str__(self) -> str:
         return str(self.value)
 
 
-BRANCH_OPCODES = ["jmp", "jeq", "jne"]
+BRANCH_OPCODES = ["jmp", "jeq", "jne", "jz"]

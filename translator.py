@@ -1,9 +1,9 @@
-import sys
+# import json
 import logging
-import json
+import sys
 
 import isa
-
+from binary import Encoder
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -12,6 +12,7 @@ logging.basicConfig(
 
 
 COMMENT_SYMBOL = ";"
+START_LABEL = "_start"
 
 def main(args: list[str]) -> None:
     _, source, target = args
@@ -19,7 +20,13 @@ def main(args: list[str]) -> None:
     raw_lines = read_source_file(source)
     code = translate(raw_lines)
 
-    write_target_file(target, code)
+    bin_code = Encoder.to_binary(code)
+
+    print(bin_code)
+
+    write_target_file(target, bin_code)
+
+    # write_target_file(target, code)
 
 
 def read_source_file(path: str) -> list[str]:
@@ -29,9 +36,9 @@ def read_source_file(path: str) -> list[str]:
 
 
 def write_target_file(path: str, data) -> None:
-    json_object = json.dumps(data, indent=2)
-    with open(path, "w", encoding="utf-8") as target:
-        target.write(json_object)
+    # json_object = json.dumps(data, indent=2)
+    with open(path, "wb") as target:
+        target.write(data)
 
 
 def translate(lines: list[str]) -> list[dict]:
@@ -49,15 +56,17 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
 
     for raw_line in lines:
         line = get_meaningful_token(raw_line)
-        if len(line) == 0: continue
+        if len(line) == 0: 
+            continue
 
-        pc = len(code)
+        pc = len(code) + 1
 
         # handle labels `<label_name>:`
         if line.endswith(":"):
             label = line.strip(":")
             if label in labels: 
                 logging.error(f"Redifination of label `{label}`")
+
             labels[label] = pc
             continue
 
@@ -71,10 +80,20 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
             mnemonic, arg = parts
             opcode = isa.OPCODE(mnemonic)
 
+            arg_type = "default"
+            if "#" in arg:
+                # raw = 'hardcoded' value
+                # example: 
+                #   ld #10 -- loads number 10 to acc
+                #   ld 0x10 -- loads value at address 0x10
+                arg_type = "raw" 
+                arg = arg.strip("#")
+
             code.append({
                 "index": pc,
                 "opcode": opcode,
-                "arg": arg
+                "arg": arg,
+                "arg_type": arg_type
             })
 
             continue
@@ -83,13 +102,17 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
         opcode = isa.OPCODE(line)
         code.append({
             "index": pc,
-            "opcode": opcode
+            "opcode": opcode,
+            "arg_type": "none",
+            "arg": 0
         })
 
     return labels, code
 
 
 def substitute_labels(labels: dict, code: list) -> list[dict]:
+    start_label = labels[START_LABEL] if START_LABEL in labels else logging.error(f"`{START_LABEL}` label not found")
+
     for instruction in code:
         if "arg" in instruction and instruction["opcode"] in isa.BRANCH_OPCODES:
             label = instruction["arg"]
@@ -97,10 +120,18 @@ def substitute_labels(labels: dict, code: list) -> list[dict]:
                 logging.error(f"Label `{label}` is not defined")
             instruction["arg"] = labels[label]
 
+    # puts `jmp _start` at the beginning
+    code.insert(0, {
+        "index": 0,
+        "opcode": "jmp",
+        "arg": str(start_label),
+        "arg_type": "init"
+    })
+
     return code
 
 
-
 if __name__ == "__main__":
-    if len(sys.argv) != 3: logging.error("Wrong arguments: translator.py <source> <target>")
+    if len(sys.argv) != 3: 
+        logging.error("Wrong arguments: translator.py <source> <target>")
     main(sys.argv)
