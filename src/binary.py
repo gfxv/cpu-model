@@ -38,18 +38,19 @@ class Encoder:
     # total: 30b
 
     @staticmethod
-    def to_binary(code: list) -> str:
+    def to_binary(code: list) -> list[str]:
         result = []
         for instr in code:
+            print(Encoder.encode(instr))
             result.append(Encoder.encode(instr))
 
-        return b"".join(result)
+        return result
 
     @staticmethod
     def encode(instruction: dict) -> str:
         bits = Encoder.get_bits(instruction)
         # https://stackoverflow.com/questions/21220916/writing-bits-to-a-binary-file
-        return int(bits[::-1], 2).to_bytes(4, 'little')
+        return int(bits, 2).to_bytes(4, "big")
         
     @staticmethod
     def get_bits(instruction: dict) -> str:
@@ -78,13 +79,19 @@ class Encoder:
 
 class Decoder:
 
+    # ADDR - 10b
+    # COMMAND - 6b
+    # ARG_TYPE - 2b
+    # ARGUMENT - 12b
+    # total: 30b
+
     @staticmethod
-    def decode(encoded) -> dict:
-        raw_bytes = Decoder.parse_bytes(encoded)
+    def decode(raw_bytes) -> dict:
+        raw_bytes = raw_bytes[2:]
         addr = Decoder.parse_addr(raw_bytes[:10])
         command = Decoder.parse_cmd(raw_bytes[10:16])
         arg_type = Decoder.parse_arg_type(raw_bytes[16:18])
-        arg = Decoder.parse_argument(raw_bytes[18:])
+        arg = Decoder.parse_argument(raw_bytes[18:30])
 
         return {
             "index": addr,
@@ -94,10 +101,10 @@ class Decoder:
         }
 
     @staticmethod
-    def parse_bytes(str) -> str:
+    def parse_bytes(encoded) -> str:
         # https://stackoverflow.com/questions/21220916/writing-bits-to-a-binary-file
         # (somewhere in the comments to the first solution)
-        return format(int.from_bytes(str, "little"), "030b")[::-1]
+        return format(int.from_bytes(encoded, "big"), "032b")
 
     @staticmethod
     def parse_addr(raw_addr) -> int:
@@ -111,22 +118,9 @@ class Decoder:
     def parse_arg_type(raw_arg_type) -> str:
         return list(ARG_TYPE_MAP.keys())[list(ARG_TYPE_MAP.values()).index(raw_arg_type)]
 
+    @staticmethod
     def parse_argument(raw_arg) -> str: 
         return str(int(raw_arg, 2))
-
-
-# print("Instruction sample:\n", test_instr)
-# print("Encoded: ")
-# enc_bits = Encoder.get_bits(test_instr)
-# encoded = Encoder.encode(test_instr)
-# print(" - bits:", enc_bits)
-# print(" - final bin:", encoded)
-
-# dec_bits = Decoder.parse_bytes(encoded)
-# decoded = Decoder.decode(encoded)
-# print("Decoded: ")
-# print(" - bits:", dec_bits)
-# print(" - decoded instr:", decoded)
 
 
 

@@ -38,7 +38,8 @@ def read_source_file(path: str) -> list[str]:
 def write_target_file(path: str, data) -> None:
     # json_object = json.dumps(data, indent=2)
     with open(path, "wb") as target:
-        target.write(data)
+        for inst in data:
+            target.write(inst)
 
 
 def translate(lines: list[str]) -> list[dict]:
