@@ -1,82 +1,31 @@
-from control_unit import MICROCODE, ControlUnit, Signal
-from data_path import ALU, AddressDecoder, DataPath
-# from binary import Decoder
-
-MEMORY_SIZE = 1024
-
+from control_unit import ControlUnit
 
 class CPU:
 
-    INSTRUCTION_LENGTH = 30
 
-    def __init__(self, control_unit: ControlUnit, data_path: DataPath, alu: ALU):
-        self.control_unit = control_unit
-        self.data_path = data_path
-        self.alu = alu
-        self.microcode = MICROCODE
-        self.mc_counter = 0
-        self.memory = [None] * MEMORY_SIZE
+    def __init__(self):
+        self.control_unit = ControlUnit()
 
-    def load_programm_to_memory(instructions: list) -> None:
-        pass
+    def load_program_to_memory(self, program: list[dict], input_data: list = None) -> None:
+        self.control_unit.data_path.input_buffer = input_data if input_data is not None else []
+        for instruction in program:
+            addr = instruction["index"]
+            if instruction["arg_type"] == "word":
+                self.control_unit.data_path.memory[addr] = len(instruction["arg"])
+                for i in range(len(instruction["arg"])):
+                    self.control_unit.data_path.memory[addr + i + 1] = ord(instruction["arg"][i])
+                continue
+
+            self.control_unit.data_path.memory[addr] = instruction
 
     def run(self) -> None:
+        try:
+            self.control_unit.run()
+        except SystemExit:
+            return self.result()
 
-        CPU_RUN = True
-        while CPU_RUN:
-            mc_instructions = self.microcode[self.mc_counter]
-            for instruction in mc_instructions:
-                
-                # latch registers
-                if instruction == Signal.LATCH_ACC: 
-                    self.data_path.acc = self.alu.result
-                if instruction == Signal.LATCH_AR: 
-                    self.data_path.ar = self.alu.result
-                if instruction == Signal.LATCH_PC: 
-                    self.data_path.pc = self.alu.result
-                if instruction == Signal.LATCH_CR: 
-                    self.data_path.cr = self.alu.result
+    def result(self) -> tuple:
+        return self.control_unit.trace_list, self.control_unit.data_path.output_buffer
 
-                # TODO: SOMETHING WITH `AddressDecoder`
-
-                # read from memmory to dr
-                if instruction == Signal.LATCH_DR and Signal.READ_MEM in mc_instructions:
-                    if AddressDecoder.is_io(self.data_path.ar):
-                       continue
-                    self.data_path.dr = self.memory[self.data_path.ar]
-
-                # write from dr to memory
-                if instruction == Signal.LATCH_DR and Signal.WRITE_MEM in mc_instructions:
-                    if AddressDecoder.is_io(self.data_path.ar):
-                        continue
-                    self.memory[self.data_path.ar] = self.data_path.dr
-
-                # path value to left alu input
-                if instruction == Signal.SEL_ACC: 
-                    self.alu.left = self.data_path.acc
-                if instruction == Signal.SEL_PC: 
-                    self.alu.left = self.data_path.pc
-
-                # path value to right alu input
-                if instruction == Signal.SEL_DATA: 
-                    self.alu.right = self.data_path.dr
-                if instruction == Signal.SEL_CMD_OPERAND: 
-                    self.alu.left = self.data_path.cr
-
-                # stop 
-                if instruction == Signal.HALT: 
-                    CPU_RUN = False
-                # start new command execution
-                if instruction == Signal.TO_START: 
-                    self.mc_counter = 0
-
-            self.mc_counter += 1
-
-    
     def print_trace(self) -> None:
-        print("trace...")
-
-            
-
-    
-
+        print(f"TICK: {self.tick} |  | ACC: {self.data_path.acc} | PC: {self.data_path.pc} | DR: {self.data_path.dr} | CR: {self.data_path.cr} | AR: {self.data_path.ar}")

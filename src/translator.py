@@ -1,9 +1,9 @@
 # import json
 import logging
 import sys
+import json
 
 import isa
-from binary import Encoder
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -19,14 +19,7 @@ def main(args: list[str]) -> None:
 
     raw_lines = read_source_file(source)
     code = translate(raw_lines)
-
-    bin_code = Encoder.to_binary(code)
-
-    print(bin_code)
-
-    write_target_file(target, bin_code)
-
-    # write_target_file(target, code)
+    write_target_file(target, code)
 
 
 def read_source_file(path: str) -> list[str]:
@@ -37,9 +30,10 @@ def read_source_file(path: str) -> list[str]:
 
 def write_target_file(path: str, data) -> None:
     # json_object = json.dumps(data, indent=2)
-    with open(path, "wb") as target:
-        for inst in data:
-            target.write(inst)
+    json_object = json.dumps(data, indent=2)
+    with open(path, "w", encoding="utf-8") as target:
+        target.write(json_object)
+
 
 
 def translate(lines: list[str]) -> list[dict]:
@@ -55,12 +49,22 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
     labels = {}
     code = []
 
+    org = 0
+    offset = 0
+
+
     for raw_line in lines:
         line = get_meaningful_token(raw_line)
         if len(line) == 0: 
             continue
 
-        pc = len(code) + 1
+        if isa.OPCODE.ORG in line:
+            org = int(line.split(" ")[1])
+            continue
+
+        # +1 is needed to insert initial `jmp` at the position `0`
+        # offset is needed to 'give space' to strings 
+        pc = len(code) + 1 + org + offset
 
         # handle labels `<label_name>:`
         if line.endswith(":"):
@@ -73,10 +77,13 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
 
         # handle `<instruction> <arg>`
         if " " in line:
-            parts = line.split(" ")
+            parts = line.split(" ", 1)
 
             if len(parts) != 2:
                 logging.error(f"Invalid instruction `{line}`")
+
+            instruction = {}
+            instruction["index"] = pc
 
             mnemonic, arg = parts
             opcode = isa.OPCODE(mnemonic)
@@ -89,14 +96,25 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
                 #   ld 0x10 -- loads value at address 0x10
                 arg_type = "raw" 
                 arg = arg.strip("#")
+            
+            if "\"" in arg:
+                arg_type = "word"
+                arg = arg.strip("\"")
+                offset += len(arg)
 
-            code.append({
-                "index": pc,
-                "opcode": opcode,
-                "arg": arg,
-                "arg_type": arg_type
-            })
+            if "&" in arg:
+                arg_type = "label"
+                arg = arg.strip("&")
 
+            if "$" in arg:
+                arg_type = "ptr"
+                arg = arg.strip("$")
+            
+            instruction["opcode"] = opcode
+            instruction["arg"] = arg
+            instruction["arg_type"] = arg_type
+
+            code.append(instruction)
             continue
 
         # handle `<instruction>`
@@ -115,7 +133,9 @@ def substitute_labels(labels: dict, code: list) -> list[dict]:
     start_label = labels[START_LABEL] if START_LABEL in labels else logging.error(f"`{START_LABEL}` label not found")
 
     for instruction in code:
-        if "arg" in instruction and instruction["opcode"] in isa.BRANCH_OPCODES:
+        if "arg" in instruction and instruction["opcode"] in isa.BRANCH_OPCODES \
+            or instruction["arg_type"] == "label":
+
             label = instruction["arg"]
             if label not in labels:
                 logging.error(f"Label `{label}` is not defined")
@@ -126,7 +146,7 @@ def substitute_labels(labels: dict, code: list) -> list[dict]:
         "index": 0,
         "opcode": "jmp",
         "arg": str(start_label),
-        "arg_type": "init"
+        "arg_type": "default"
     })
 
     return code

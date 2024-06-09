@@ -16,7 +16,8 @@ OPCODE_BIN_MAP = {
     OPCODE.JZ : "001000", # 0x8
     OPCODE.LD : "001001", # 0x9
     OPCODE.ST : "001010", # 0xA
-    OPCODE.HLT: "001011", # 0xB
+    OPCODE.WRD: "001011", # 0xB
+    OPCODE.HLT: "001100", # 0xC
 }
 
 ARG_TYPE_MAP = {
@@ -41,7 +42,6 @@ class Encoder:
     def to_binary(code: list) -> list[str]:
         result = []
         for instr in code:
-            print(Encoder.encode(instr))
             result.append(Encoder.encode(instr))
 
         return result
@@ -122,6 +122,8 @@ class Decoder:
     def parse_argument(raw_arg) -> str: 
         return str(int(raw_arg, 2))
 
+    # @staticmethod
+    # def parse_value(raw)
 
 
 

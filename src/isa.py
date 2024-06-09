@@ -3,6 +3,7 @@ from enum import Enum
 
 class OPCODE(str, Enum):
     ORG = "org" # ? deprecated ?
+    WORD = "word"
     LD = "ld"
     ST = "st"
 
@@ -12,6 +13,7 @@ class OPCODE(str, Enum):
     DIV = "div"
     MOD = "mod"
     INC = "inc"
+    DEC = "dec"
 
     CMP = "cmp"
     JMP = "jmp"
@@ -19,7 +21,7 @@ class OPCODE(str, Enum):
     JNE = "jne" # deprecated ?
     JZ = "jz"
 
-    LOOP = "loop" # deprecated
+    WRD = "word"
     HLT = "hlt"
 
     def __str__(self) -> str:
