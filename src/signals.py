@@ -21,5 +21,6 @@ class Signal(Enum):
     INC = auto()
     DEC = auto()
     SUM = auto()
+    SUB = auto()
     MOD = auto()
     CMP = auto()

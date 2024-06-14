@@ -10,13 +10,12 @@ def main(args) -> None:
 
     cpu = CPU()
     cpu.load_program_to_memory(program, input_data)
-    
     trace, out = cpu.run()
 
-    
     print("\n".join(trace))
     print("=== OUT ===")
     print("".join(list(map(lambda sym: chr(sym), out))))
+
 
 def load_input(args) -> tuple:
     program = read_program(args[1])
@@ -31,10 +30,13 @@ def read_program(path) -> dict:
     with open(path, "r") as source:
         program = json.load(source)
         return program
-    
+
 def read_input(path) -> list:
     with open(path, "r") as file:
-        return file.readlines()
+        data = list(map(lambda sym: ord(sym), list(file.read())))
+        data[0] = int(chr(data[0]))
+        return data
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

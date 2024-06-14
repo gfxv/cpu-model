@@ -4,6 +4,7 @@ from enum import Enum
 class OPCODE(str, Enum):
     ORG = "org" # ? deprecated ?
     WORD = "word"
+    INT = "int"
     LD = "ld"
     ST = "st"
 
@@ -21,7 +22,10 @@ class OPCODE(str, Enum):
     JNE = "jne" # deprecated ?
     JZ = "jz"
 
-    WRD = "word"
+    PUSH = "push"
+    POP = "pop"
+
+    # WRD = "word"
     HLT = "hlt"
 
     def __str__(self) -> str:
@@ -29,3 +33,4 @@ class OPCODE(str, Enum):
 
 
 BRANCH_OPCODES = ["jmp", "jeq", "jne", "jz"]
+STACK_OPCODES = ["push", "pop"]

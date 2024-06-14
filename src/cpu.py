@@ -1,10 +1,10 @@
 from control_unit import ControlUnit
+from data_path import DataPath
 
 class CPU:
 
-
     def __init__(self):
-        self.control_unit = ControlUnit()
+        self.control_unit = ControlUnit(DataPath())
 
     def load_program_to_memory(self, program: list[dict], input_data: list = None) -> None:
         self.control_unit.data_path.input_buffer = input_data if input_data is not None else []
@@ -15,10 +15,13 @@ class CPU:
                 for i in range(len(instruction["arg"])):
                     self.control_unit.data_path.memory[addr + i + 1] = ord(instruction["arg"][i])
                 continue
+            if instruction["arg_type"] == "int":
+                self.control_unit.data_path.memory[addr] = int(instruction["arg"])
+                continue
 
             self.control_unit.data_path.memory[addr] = instruction
 
-    def run(self) -> None:
+    def run(self):
         try:
             self.control_unit.run()
         except SystemExit:
@@ -26,6 +29,3 @@ class CPU:
 
     def result(self) -> tuple:
         return self.control_unit.trace_list, self.control_unit.data_path.output_buffer
-
-    def print_trace(self) -> None:
-        print(f"TICK: {self.tick} |  | ACC: {self.data_path.acc} | PC: {self.data_path.pc} | DR: {self.data_path.dr} | CR: {self.data_path.cr} | AR: {self.data_path.ar}")

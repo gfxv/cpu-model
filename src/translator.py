@@ -1,4 +1,3 @@
-# import json
 import logging
 import sys
 import json
@@ -9,7 +8,6 @@ logging.basicConfig(
     level=logging.INFO, 
     format="%(levelname)s: %(message)s"
 )
-
 
 COMMENT_SYMBOL = ";"
 START_LABEL = "_start"
@@ -29,7 +27,6 @@ def read_source_file(path: str) -> list[str]:
 
 
 def write_target_file(path: str, data) -> None:
-    # json_object = json.dumps(data, indent=2)
     json_object = json.dumps(data, indent=2)
     with open(path, "w", encoding="utf-8") as target:
         target.write(json_object)
@@ -52,7 +49,6 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
     org = 0
     offset = 0
 
-
     for raw_line in lines:
         line = get_meaningful_token(raw_line)
         if len(line) == 0: 
@@ -63,7 +59,7 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
             continue
 
         # +1 is needed to insert initial `jmp` at the position `0`
-        # offset is needed to 'give space' to strings 
+        # offset is needed to 'give space' for strings 
         pc = len(code) + 1 + org + offset
 
         # handle labels `<label_name>:`
@@ -87,28 +83,34 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
 
             mnemonic, arg = parts
             opcode = isa.OPCODE(mnemonic)
-
             arg_type = "default"
-            if "#" in arg:
-                # raw = 'hardcoded' value
-                # example: 
-                #   ld #10 -- loads number 10 to acc
-                #   ld 0x10 -- loads value at address 0x10
-                arg_type = "raw" 
-                arg = arg.strip("#")
-            
-            if "\"" in arg:
-                arg_type = "word"
-                arg = arg.strip("\"")
-                offset += len(arg)
 
-            if "&" in arg:
-                arg_type = "label"
-                arg = arg.strip("&")
+            if opcode == isa.OPCODE.WORD:
+                word_size = 0
+                if "\"" in arg:
+                    # handles `word "some text"`
+                    arg = arg.strip("\"")
+                    word_size = len(arg)
+                else:
+                    # handles `word N` - allocates N cells
+                    buff_size = int(arg)
+                    arg = "-" * buff_size
+                    word_size= buff_size
+                arg_type = "word"
+                offset += word_size
+
+            if "#" in arg or "&" in arg:
+                arg_type = "raw" 
+                arg = arg.strip("#").strip("&")
 
             if "$" in arg:
                 arg_type = "ptr"
                 arg = arg.strip("$")
+
+            if opcode == isa.OPCODE.INT:
+                arg = int(arg)
+                arg_type = "int"
+
             
             instruction["opcode"] = opcode
             instruction["arg"] = arg
@@ -130,12 +132,11 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
 
 
 def substitute_labels(labels: dict, code: list) -> list[dict]:
-    start_label = labels[START_LABEL] if START_LABEL in labels else logging.error(f"`{START_LABEL}` label not found")
+    start_label = labels[START_LABEL] if START_LABEL in labels \
+        else logging.error(f"`{START_LABEL}` label not found")
 
     for instruction in code:
-        if "arg" in instruction and instruction["opcode"] in isa.BRANCH_OPCODES \
-            or instruction["arg_type"] == "label":
-
+        if instruction["arg"] in labels:
             label = instruction["arg"]
             if label not in labels:
                 logging.error(f"Label `{label}` is not defined")

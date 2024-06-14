@@ -1,5 +1,5 @@
 from signals import Signal
-    
+
 class AddressDecoder:
 
     IN_MEMORY = 0x1
@@ -7,13 +7,13 @@ class AddressDecoder:
 
     @staticmethod
     def is_io(address: int) -> bool:
-        if int(address) < 0: 
+        if int(address) < 0:
             raise ValueError(f"Address `{address}` can't be negative")
         if int(address) > DataPath.MEMORY_SIZE:
             raise ValueError(f"Address `{address}` can't be greater than {DataPath.MEMORY_SIZE}")
 
-        return int(address) <= AddressDecoder.OUT_MEMORY
-    
+        return int(address) == AddressDecoder.IN_MEMORY or int(address) == AddressDecoder.OUT_MEMORY
+
 
 class ALU:
     def __init__(self):
@@ -29,14 +29,14 @@ class ALU:
         match signal:
             case Signal.SUM:
                 self.set_result(int(self.right) + int(self.left))
+            case Signal.SUB:
+                self.set_result(int(self.left) - int(self.right))
             case Signal.MOD:
                 self.set_result(int(self.left) % int(self.right))
             case Signal.INC:
                 self.set_result(int(self.left) + 1)
             case Signal.DEC:
                 self.set_result(int(self.left) - 1)
-            case Signal.CMP:
-                self.set_result(int(self.left) - int(self.right))
             case _:
                 print("Unknown signal: {}".format(signal))
 
@@ -57,16 +57,10 @@ class ALU:
 
 
 class DataPath:
-    """
-    Signals to do:
-    ```
-    * READ_MEM
-    * WRITE_MEM
-    ```
-    """
 
     MEMORY_SIZE = 1024
-    MAX_BUFFER_SIZE = 128
+    MAX_BUFFER_SIZE = 256
+    STACK_SIZE = 128
 
     def __init__(self):
         self.alu = ALU()
@@ -75,8 +69,8 @@ class DataPath:
         self.dr = 0
         self.cr = 0
         self.ar = 0
-        self.z = 0
-        self.n = 0
+        self.z = False
+        self.n = False
         self.input_buffer = []
         self.output_buffer = []
         self.memory = [None] * DataPath.MEMORY_SIZE
@@ -86,14 +80,13 @@ class DataPath:
             if len(self.input_buffer) == 0:
                 raise BufferError("Input buffer is empty")
             symbol = self.input_buffer.pop(0)
-            symbol_code = ord(symbol)
-            self.dr = symbol_code
+            self.dr = symbol
             return
-        self.dr = self.memory[self.ar]
+        self.dr = self.memory[int(self.ar)]
 
     def write_mem(self):
         if AddressDecoder.is_io(self.ar):
-            if len(self.output_buffer) == DataPath.MAX_BUFFER_SIZE:
+            if len(self.output_buffer) >= DataPath.MAX_BUFFER_SIZE:
                 raise BufferError("Output buffer overflow")
             self.output_buffer.append(self.dr)
             return
@@ -121,7 +114,7 @@ class DataPath:
         if signal is None:
             self.dr = self.alu.value
             return
-        self.dr = self.memory[int(self.ar)]
+        self.read_mem()
 
     def latch_cr(self):
         self.cr = self.dr
@@ -135,8 +128,12 @@ class DataPath:
 
     def is_zero(self) -> bool:
         return self.z
-    
+
     def is_negative(self) -> bool:
         return self.n
 
+    def _print_cell(self) -> None:
+        print(f"[{self.ar}] {self.memory[int(self.ar)]}")
 
+    def _print_commad(self) -> None:
+        print(f"{self.cr["opcode"]} {self.cr["arg"]} ({self.cr["arg_type"]})")
