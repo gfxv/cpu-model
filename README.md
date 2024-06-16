@@ -15,7 +15,7 @@ __Форма Бэкуса-Наура__
 
 <line> ::= statement | label | comment
 
-<label> ::= <any of "a-z A-Z _">":" | start_label
+<label> ::= <any string except: ";">":" | start_label
 
 <start_label> ::= "_start:" new_line
 
