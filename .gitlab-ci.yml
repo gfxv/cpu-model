@@ -11,8 +11,8 @@ test-lab3:
   script:
     - python3 -m pip install --upgrade pip
     - pip install -r requirements.txt
-    - poetry run coverage run -m pytest .
-    - poetry run coverage report -m 
+    - coverage run -m pytest --verbose
+    - find . -type f -name "*.py" | xargs -t coverage report
 
 
 lint-lab3:
@@ -23,6 +23,6 @@ lint-lab3:
   script:
     - python3 -m pip install --upgrade pip
     - pip install -r requirements.txt
-    - poetry run ruff format --check .
+    - ruff format --check .
     - poetry run ruff check .
 
