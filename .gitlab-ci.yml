@@ -17,9 +17,9 @@ test-lab3:
   image:
     name: ryukzak/python-tools
     entrypoint: [""]
-    script:
-      - poetry run coverage run -m pytest .
-      - poetry run coverage report -m 
+  script:
+    - poetry run coverage run -m pytest .
+    - poetry run coverage report -m 
 
 
 lint-lab3:
