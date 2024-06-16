@@ -1,7 +1,7 @@
 import logging
 
 from data_path import DataPath
-from isa import BRANCH_OPCODES, OPCODE, STACK_OPCODES
+from isa import BRANCH_OPCODES, OPCODE
 from signals import Signal
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s:%(name)s | %(message)s")
@@ -94,9 +94,6 @@ class ControlUnit:
 
     def is_constrol_flow_instruction(self) -> bool:
         return self.data_path.cr["opcode"] in BRANCH_OPCODES
-
-    def is_stack_instruction(self) -> bool:
-        return self.data_path.cr["opcode"] in STACK_OPCODES
 
     def trace(self) -> None:
         instruction = self.data_path.cr

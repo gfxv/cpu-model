@@ -60,7 +60,6 @@ class ALU:
 class DataPath:
     MEMORY_SIZE = 1024
     MAX_BUFFER_SIZE = 256
-    STACK_SIZE = 128
 
     def __init__(self):
         self.alu = ALU()
