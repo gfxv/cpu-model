@@ -1,10 +1,55 @@
 # Архитектура компьютера - 2024
 
-- Рудкевич Илья Александрович
+- Рудкевич Илья Александрович, P3206
 - `asm | acc | neum | hw | instr | struct | stream | mem | pstr | prob1`
 - Упрощённый вариант
 
 ## Язык программирования
+
+__Форма Бэкуса-Наура__
+
+```ebnf
+<program> ::= lines
+
+<lines> ::= line | line new_line program
+
+<line> ::= statement | label | comment
+
+<label> ::= <any of "a-z A-Z _">":" | start_label
+
+<start_label> ::= "_start:" new_line
+
+<comment> ::= ";" string
+
+<statement> ::= opcode | opcode arg | opcode comment | opcode arg comment
+
+<opcode> ::= org
+           | word
+           | int
+           | ld
+           | st
+           | add
+           | sub
+           | inc
+           | dec
+           | cmp
+           | jmp
+           | jz
+           | hlt
+
+<arg> ::= integer
+        | "#"integer
+        | "$"integer
+        | label
+        | "&"label
+        | "$"label
+        | string
+
+<string> ::= "char" | "<char><string>"
+<integer> ::= digit | <digit><integer>
+<digit> ::= 0 | 1 | 2 | ... | 8 | 9
+```
+
 
 ## Организация памяти
 
