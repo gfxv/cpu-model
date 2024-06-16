@@ -25,4 +25,3 @@ class OPCODE(str, Enum):
 
 
 BRANCH_OPCODES = ["jmp", "jeq", "jne", "jz"]
-STACK_OPCODES = ["push", "pop"]
