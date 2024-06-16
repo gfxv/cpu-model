@@ -1,5 +1,3 @@
-
-
 org 5
 counter:
     int 0

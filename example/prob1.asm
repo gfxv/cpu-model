@@ -40,5 +40,5 @@ _start:
 
     stop:
         ld counter
-        st #2
+        st #1
         hlt ; stop

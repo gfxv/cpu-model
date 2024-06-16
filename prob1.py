@@ -1,5 +1,5 @@
-
 # little python script to check asm script
+
 
 def main() -> None:
     counter = 0
@@ -14,6 +14,7 @@ def main() -> None:
         number += 1
 
     print(counter)
+
 
 if __name__ == "__main__":
     main()

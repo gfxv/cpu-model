@@ -7,9 +7,11 @@ counter:
     int 0
 
 prompt_message:
-    word "What's your name? (Put length of your name at the beginning. Example: 4Ilya)"
+    word "What's your name? (Put length of your name at the beginning. Example: 8Username)"
 greetings_string:
     word "Hello, "
+new_line:
+    int 10
 end_string:
     word "!"
 
@@ -40,7 +42,7 @@ _start:
         st &pointer    ; save
 
         ld $pointer    ; load current symbol
-        st #2          ; print symbol ([1] - i/o address)
+        st #1          ; print symbol ([1] - i/o address)
 
         ; decrement counter
         ld counter
@@ -49,7 +51,6 @@ _start:
 
         ; check counter
         jz read_input
-        ; jz print_greetings
         jmp prompt_loop
 
     ;;;;;;;;;;;;;;;;
@@ -57,6 +58,10 @@ _start:
     ;;;;;;;;;;;;;;;;
 
     read_input:
+
+        ld new_line
+        st #1
+
         ld 1                    ; read length
         st &input_length        ; save length (needed later to print buffer)
         st &counter             ; save length, acts as a counter
@@ -101,7 +106,7 @@ _start:
         st &pointer
 
         ld $pointer
-        st #2
+        st #1
 
         ld counter
         dec
@@ -110,7 +115,7 @@ _start:
         jz print_name
         jmp greetings_loop
 
-    ; 'prints users name'
+    ; prints '<name>'
     print_name:
     ld input_start_pointer
     st &pointer
@@ -120,7 +125,7 @@ _start:
 
     hello_loop:
         ld $pointer
-        st #2
+        st #1
 
         ld pointer
         inc
@@ -140,5 +145,5 @@ _start:
         st &pointer
 
         ld $pointer
-        st #2
+        st #1
     hlt

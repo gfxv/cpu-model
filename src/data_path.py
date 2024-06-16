@@ -1,18 +1,19 @@
 from signals import Signal
 
-class AddressDecoder:
 
-    IN_MEMORY = 0x1
-    OUT_MEMORY = 0x2
+class AddressDecoder:
+    IO_MEMORY = 0x1
 
     @staticmethod
     def is_io(address: int) -> bool:
         if int(address) < 0:
             raise ValueError(f"Address `{address}` can't be negative")
         if int(address) > DataPath.MEMORY_SIZE:
-            raise ValueError(f"Address `{address}` can't be greater than {DataPath.MEMORY_SIZE}")
+            raise ValueError(
+                f"Address `{address}` can't be greater than {DataPath.MEMORY_SIZE}"
+            )
 
-        return int(address) == AddressDecoder.IN_MEMORY or int(address) == AddressDecoder.OUT_MEMORY
+        return int(address) == AddressDecoder.IO_MEMORY
 
 
 class ALU:
@@ -57,7 +58,6 @@ class ALU:
 
 
 class DataPath:
-
     MEMORY_SIZE = 1024
     MAX_BUFFER_SIZE = 256
     STACK_SIZE = 128

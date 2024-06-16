@@ -1,26 +1,28 @@
-import sys
 import json
+import sys
 
 from cpu import CPU
 
 
 def main(args) -> None:
-
     program, input_data = load_input(args)
-
     cpu = CPU()
     cpu.load_program_to_memory(program, input_data)
-    trace, out = cpu.run()
+    instructions, out, ticks = cpu.run()
 
-    print("\n".join(trace))
+    print(f"Instructions: {instructions}")
+    print(f"Ticks: {ticks}")
     print("=== OUT ===")
-    print("".join(list(map(lambda sym: chr(sym), out))))
+    print("--- bytes ---")
+    print(" ".join(list(map(str, out))))
+    print("--- string ---")
+    print("".join(list(map(lambda c: chr(c), out))))
 
 
 def load_input(args) -> tuple:
     program = read_program(args[1])
     input_data = None
-    if len(args) > 2:
+    if len(args) > 2 and args[2] != "":
         input_data = read_input(args[2])
 
     return program, input_data
@@ -30,6 +32,7 @@ def read_program(path) -> dict:
     with open(path, "r") as source:
         program = json.load(source)
         return program
+
 
 def read_input(path) -> list:
     with open(path, "r") as file:

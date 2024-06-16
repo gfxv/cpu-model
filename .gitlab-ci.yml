@@ -1,0 +1,33 @@
+stages:
+  - install
+  - test
+  - lint
+
+install-requirements:
+  stage: install
+  image: 
+    name: yukzak/python-tools
+    entrypoint: [""]
+  script:
+    - python3 -m pip install --upgrade pip
+    - pip install -r requirements.txt
+
+test-lab3:
+  stage: test
+  image:
+    name: ryukzak/python-tools
+    entrypoint: [""]
+    script:
+      - poetry run coverage run -m pytest .
+      - poetry run coverage report -m 
+
+
+lint-lab3:
+  stage: lint
+  image:
+    name: ryukzak/python-tools
+    entrypoint: [""]
+  script:
+    - poetry run ruff format --check .
+    - poetry run ruff check .
+

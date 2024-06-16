@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class OPCODE(str, Enum):
-    ORG = "org" # ? deprecated ?
+    ORG = "org"
     WORD = "word"
     INT = "int"
     LD = "ld"
@@ -10,22 +10,14 @@ class OPCODE(str, Enum):
 
     ADD = "add"
     SUB = "sub"
-    MUL = "mul" # deprecated ?
-    DIV = "div"
     MOD = "mod"
     INC = "inc"
     DEC = "dec"
 
     CMP = "cmp"
     JMP = "jmp"
-    JEQ = "jeq" # depreacated ?
-    JNE = "jne" # deprecated ?
     JZ = "jz"
 
-    PUSH = "push"
-    POP = "pop"
-
-    # WRD = "word"
     HLT = "hlt"
 
     def __str__(self) -> str:

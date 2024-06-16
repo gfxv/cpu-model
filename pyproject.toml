@@ -1,0 +1,9 @@
+[tool.poetry]
+name = "csa-lab3"
+description = ""
+version = "1.0"
+authors = ["Ilya Rudkevich"]
+readme = "README.md"
+
+
+

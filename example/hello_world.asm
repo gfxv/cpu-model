@@ -1,4 +1,3 @@
-
 org 20
 
 hello_string:
@@ -23,7 +22,7 @@ _start:
 
         ; output symbol
         ld $pointer
-        st #2
+        st #1
 
         ; dec counter
         ld counter   ; load counter
