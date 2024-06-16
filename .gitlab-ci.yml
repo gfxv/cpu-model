@@ -12,7 +12,7 @@ test-lab3:
     - python3 -m pip install --upgrade pip
     - pip install -r requirements.txt
     - coverage run -m pytest --verbose
-    - find . -type f -name "*.py" | xargs -t coverage report
+    - coverage report -m 
 
 
 lint-lab3:
