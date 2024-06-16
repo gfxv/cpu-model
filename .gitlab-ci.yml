@@ -6,7 +6,7 @@ stages:
 install-requirements:
   stage: install
   image: 
-    name: yukzak/python-tools
+    name: ryukzak/python-tools
     entrypoint: [""]
   script:
     - python3 -m pip install --upgrade pip
