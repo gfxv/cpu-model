@@ -170,6 +170,8 @@
 
 ## Транслятор
 `Интерфейс командной строки: translator.py <input_file> <target_file>`
+
+
 Реализовано в модуле: [translator]{src/translator.py}
 
 Этапы трансляции:
