@@ -1,3 +1,5 @@
+import logging
+
 from signals import Signal
 
 
@@ -65,8 +67,8 @@ class DataPath:
         self.alu = ALU()
         self.acc = 0
         self.pc = 0
-        self.dr = 0
-        self.cr = 0
+        self.dr = None
+        self.cr = None
         self.ar = 0
         self.z = False
         self.n = False
@@ -79,15 +81,17 @@ class DataPath:
             if len(self.input_buffer) == 0:
                 raise BufferError("Input buffer is empty")
             symbol = self.input_buffer.pop(0)
-            self.dr = symbol
+            self.dr["arg"] = symbol
+            logging.info(f"IN: {symbol}")
             return
-        self.dr = self.memory[int(self.ar)]
+        self.dr = self.memory[int(self.ar)].copy()
 
     def write_mem(self):
         if AddressDecoder.is_io(self.ar):
             if len(self.output_buffer) >= DataPath.MAX_BUFFER_SIZE:
                 raise BufferError("Output buffer overflow")
-            self.output_buffer.append(self.dr)
+            self.output_buffer.append(self.dr["arg"])
+            logging.info(f"OUT: {self.dr["arg"]}")
             return
         self.memory[int(self.ar)] = self.dr
 
@@ -98,7 +102,7 @@ class DataPath:
         self.alu.left = self.pc
 
     def sel_data(self):
-        self.alu.right = self.dr
+        self.alu.right = self.dr["arg"]
 
     def sel_cmd_operand(self):
         self.alu.right = self.cr["arg"]
@@ -111,12 +115,12 @@ class DataPath:
 
     def latch_dr(self, signal=None):
         if signal is None:
-            self.dr = self.alu.value
+            self.dr["arg"] = self.alu.value
             return
         self.read_mem()
 
     def latch_cr(self):
-        self.cr = self.dr
+        self.cr = self.dr.copy()
 
     def latch_ar(self):
         self.ar = self.alu.value

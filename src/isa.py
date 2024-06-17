@@ -18,6 +18,7 @@ class OPCODE(str, Enum):
     JMP = "jmp"
     JZ = "jz"
 
+    NOP = "nop"
     HLT = "hlt"
 
     def __str__(self) -> str:

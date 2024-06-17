@@ -8,6 +8,9 @@ def main(args) -> None:
     program, input_data = load_input(args)
     cpu = CPU()
     cpu.load_program_to_memory(program, input_data)
+
+    cpu.control_unit.print_memory()
+
     instructions, out, ticks = cpu.run()
 
     print(f"Instructions: {instructions}")

@@ -83,18 +83,28 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
             arg_type = "default"
 
             if opcode == isa.OPCODE.WORD:
-                word_size = 0
-                if '"' in arg:
-                    # handles `word "some text"`
-                    arg = arg.strip('"')
-                    word_size = len(arg)
+                # word_size = 0
+                # if '"' in arg:
+                #     # handles `word "some text"`
+                #     arg = arg.strip('"')
+                #     word_size = len(arg)
+
+                # else:
+                #     # handles `word N` - allocates N cells
+                #     buff_size = int(arg)
+                #     arg = "-" * buff_size
+                #     word_size = buff_size
+                # arg_type = "word"
+                # offset += word_size
+                if "\"" in arg:
+                    string = reserve_string(arg.strip('"'), pc)
+                    code += string
+                    continue
                 else:
-                    # handles `word N` - allocates N cells
                     buff_size = int(arg)
-                    arg = "-" * buff_size
-                    word_size = buff_size
-                arg_type = "word"
-                offset += word_size
+                    string = reserve_string("0" * buff_size, pc)
+                    code += string
+                    continue
 
             if "#" in arg or "&" in arg:
                 arg_type = "raw"
@@ -105,8 +115,9 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
                 arg = arg.strip("$")
 
             if opcode == isa.OPCODE.INT:
+                opcode = "nop"
                 arg = int(arg)
-                arg_type = "int"
+                arg_type = "data"
 
             instruction["opcode"] = opcode
             instruction["arg"] = arg
@@ -120,6 +131,27 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
         code.append({"index": pc, "opcode": opcode, "arg_type": "none", "arg": 0})
 
     return labels, code
+
+def reserve_string(string: str, curr_index: int) -> list[dict]:
+    filler_nops = []
+
+    string_length = {
+        "index": curr_index,
+        "opcode": "nop",
+        "arg": len(string),
+        "arg_type": "data"
+    }
+    filler_nops.append(string_length)
+
+    for s in range(len(string)):
+        nop = {
+            "index": s + curr_index + 1, # +1 because of string length
+            "opcode": "nop",
+            "arg": ord(string[s]),
+            "arg_type": "data",
+        }
+        filler_nops.append(nop)
+    return filler_nops
 
 
 def substitute_labels(labels: dict, code: list) -> list[dict]:

@@ -14,16 +14,16 @@ class CPU:
         )
         for instruction in program:
             addr = instruction["index"]
-            if instruction["arg_type"] == "word":
-                self.control_unit.data_path.memory[addr] = len(instruction["arg"])
-                for i in range(len(instruction["arg"])):
-                    self.control_unit.data_path.memory[addr + i + 1] = ord(
-                        instruction["arg"][i]
-                    )
-                continue
-            if instruction["arg_type"] == "int":
-                self.control_unit.data_path.memory[addr] = int(instruction["arg"])
-                continue
+            # if instruction["arg_type"] == "word":
+            #     self.control_unit.data_path.memory[addr] = len(instruction["arg"])
+            #     for i in range(len(instruction["arg"])):
+            #         self.control_unit.data_path.memory[addr + i + 1] = ord(
+            #             instruction["arg"][i]
+            #         )
+            #     continue
+            # if instruction["arg_type"] == "int":
+            #     self.control_unit.data_path.memory[addr] = int(instruction["arg"])
+            #     continue
 
             self.control_unit.data_path.memory[addr] = instruction
 

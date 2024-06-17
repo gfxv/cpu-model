@@ -87,7 +87,7 @@ class ControlUnit:
             self.tick()
             return
 
-        if operand_type == "none":
+        if operand_type == "none" or operand_type == "data":
             return
 
         raise ValueError(f"Unknown operand type: {operand_type}")
@@ -99,7 +99,7 @@ class ControlUnit:
         instruction = self.data_path.cr
         arg = instruction["arg"] if instruction["arg_type"] != "none" else "-"
         trace = f"TICK: {self._tick:<4} | {instruction["opcode"]:<4} | ARG: {arg:<3} | TYPE: {instruction["arg_type"]:<7} | "
-        trace += f"PC: {self.data_path.pc:<3} | ACC: {self.data_path.acc:<3} | AR: {self.data_path.ar:<3} | N: {str(self.data_path.n):<6} | Z: {str(self.data_path.z):<6}"
+        trace += f"PC: {self.data_path.pc:<3} | ACC: {self.data_path.acc:<3} | DR: {self.data_path.dr["arg"]:<3} | AR: {self.data_path.ar:<3} | N: {str(self.data_path.n):<6} | Z: {str(self.data_path.z):<6}"
         logging.debug(trace)
 
     # Print Not-None memory cells
@@ -117,6 +117,9 @@ class ControlUnit:
 
             instruction = self.data_path.cr
             opcode = instruction["opcode"]
+
+            if opcode == OPCODE.NOP:
+                continue
 
             if self.is_constrol_flow_instruction():
                 if opcode == OPCODE.JMP:
