@@ -176,11 +176,12 @@ class ControlUnit:
                 self.tick()
 
             if opcode == OPCODE.LD:
-                # DR -> ACC
+                # DR -> ACC, NZ
                 self.data_path.sel_data()
                 self.data_path.alu.zero_left()
                 self.data_path.alu.pass_value()
                 self.data_path.latch_acc()
+                self.data_path.latch_nz()
                 self.tick()
 
             if opcode == OPCODE.ST:
