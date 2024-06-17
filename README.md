@@ -217,10 +217,10 @@
 ![controlunit.jpg](docs/controlunit.jpg)
 
 Реализован в классе ControlUnit в модуле [control_unit](src/control_unit.py)
+
+#### Особенности работы модели
 - Hardwired
 - `step counter` необходим для многотактовых инструкций
-
-Особенности работы модели:
 - Цикл симуляции осуществляется в функции `run`.
 - Шаг моделирования соответствует одной инструкции с выводом состояния в журнал.
 - Для журнала состояний процессора используется стандартный модуль logging.
@@ -230,6 +230,197 @@
 - - исключении BufferError (буфер переполнен или пустой)
 
 ## Тестирование
+Тестирование выполняется при помощи golden test-ов.
+
+GitLab CI:
+```yml
+stages:
+  - test
+  - lint
+
+test-lab3:
+  stage: test
+  image:
+    name: ryukzak/python-tools
+    entrypoint: [""]
+  script:
+    - python3 -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - coverage run -m poetry run pytest . -v --update-goldens
+    - coverage report -m
+
+lint-lab3:
+  stage: lint
+  image:
+    name: ryukzak/python-tools
+    entrypoint: [""]
+  script:
+    - python3 -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - ruff format --check .
+    - ruff check .
+```
+
+Пример использования и журнал работы процессора на примере `cat`:
+```bash
+$ cat example/input.txt
+9hmmm.....
+
+$ cat example/cat.asm
+org 5
+counter:
+    int 0
+_start:
+    ld 1
+    st &counter
+    loop:
+        ld 1
+        st #1
+        ld counter
+        dec
+        st &counter
+        jz stop
+        jmp loop
+    stop:
+        hlt
+
+$ python3 src/translator.py example/cat.asm out/cat.json
+$ cat out/cat.json
+[
+  {"index": 0, "opcode": "jmp", "arg": "7", "arg_type": "default"},
+  {"index": 6, "opcode": "nop", "arg": 0, "arg_type": "data"},
+  {"index": 7, "opcode": "ld", "arg": "1", "arg_type": "default"},
+  {"index": 8, "opcode": "st", "arg": 6, "arg_type": "raw"},
+  {"index": 9, "opcode": "ld", "arg": "1", "arg_type": "default"},
+  {"index": 10, "opcode": "st", "arg": "1", "arg_type": "raw"},
+  {"index": 11, "opcode": "ld", "arg": 6, "arg_type": "default"},
+  {"index": 12, "opcode": "dec", "arg_type": "none", "arg": 0},
+  {"index": 13, "opcode": "st", "arg": 6, "arg_type": "raw"},
+  {"index": 14, "opcode": "jz", "arg": 16, "arg_type": "default"},
+  {"index": 15, "opcode": "jmp", "arg": 9, "arg_type": "default"},
+  {"index": 16, "opcode": "hlt", "arg_type": "none", "arg": 0}
+]
+
+$ python3 src/machine.py out/cat.json example/input.txt
+DEBUG | TICK: 4    | jmp  | ARG: 7   | TYPE: default | PC: 7   | ACC: 0   | DR: 7   | AR: 0   | N: False  | Z: False
+INFO | IN: 9
+DEBUG | TICK: 10   | ld   | ARG: 1   | TYPE: default | PC: 8   | ACC: 9   | DR: 9   | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 17   | st   | ARG: 6   | TYPE: raw     | PC: 9   | ACC: 9   | DR: 9   | AR: 6   | N: False  | Z: False
+INFO | IN: 104
+DEBUG | TICK: 23   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 104 | DR: 104 | AR: 1   | N: False  | Z: False
+INFO | OUT: 104
+DEBUG | TICK: 30   | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 104 | DR: 104 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 36   | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 9   | DR: 9   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 40   | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 8   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 47   | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 8   | DR: 8   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 51   | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 8   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 55   | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 8   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 109
+DEBUG | TICK: 61   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+INFO | OUT: 109
+DEBUG | TICK: 68   | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 74   | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 8   | DR: 8   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 78   | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 7   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 85   | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 7   | DR: 7   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 89   | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 7   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 93   | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 7   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 109
+DEBUG | TICK: 99   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+INFO | OUT: 109
+DEBUG | TICK: 106  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 112  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 7   | DR: 7   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 116  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 6   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 123  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 6   | DR: 6   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 127  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 6   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 131  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 6   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 109
+DEBUG | TICK: 137  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+INFO | OUT: 109
+DEBUG | TICK: 144  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 150  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 6   | DR: 6   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 154  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 5   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 161  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 5   | DR: 5   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 165  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 5   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 169  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 5   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 46
+DEBUG | TICK: 175  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+INFO | OUT: 46
+DEBUG | TICK: 182  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 188  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 5   | DR: 5   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 192  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 4   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 199  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 4   | DR: 4   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 203  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 4   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 207  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 4   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 46
+DEBUG | TICK: 213  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+INFO | OUT: 46
+DEBUG | TICK: 220  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 226  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 4   | DR: 4   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 230  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 3   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 237  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 3   | DR: 3   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 241  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 3   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 245  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 3   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 46
+DEBUG | TICK: 251  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+INFO | OUT: 46
+DEBUG | TICK: 258  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 264  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 3   | DR: 3   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 268  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 2   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 275  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 2   | DR: 2   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 279  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 2   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 283  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 2   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 46
+DEBUG | TICK: 289  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+INFO | OUT: 46
+DEBUG | TICK: 296  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 302  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 2   | DR: 2   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 306  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 1   | DR: 0   | AR: 12  | N: False  | Z: False
+DEBUG | TICK: 313  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 1   | DR: 1   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 317  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 1   | DR: 16  | AR: 14  | N: False  | Z: False
+DEBUG | TICK: 321  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 1   | DR: 9   | AR: 15  | N: False  | Z: False
+INFO | IN: 46
+DEBUG | TICK: 327  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+INFO | OUT: 46
+DEBUG | TICK: 334  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 340  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 1   | DR: 1   | AR: 6   | N: False  | Z: False
+DEBUG | TICK: 344  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 0   | DR: 0   | AR: 12  | N: False  | Z: True
+DEBUG | TICK: 351  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 0   | DR: 0   | AR: 6   | N: False  | Z: True
+DEBUG | TICK: 355  | jz   | ARG: 16  | TYPE: default | PC: 16  | ACC: 0   | DR: 16  | AR: 14  | N: False  | Z: True
+DEBUG | TICK: 359  | hlt  | ARG: -   | TYPE: none    | PC: 17  | ACC: 0   | DR: 0   | AR: 16  | N: False  | Z: True
+Instructions: 66
+Ticks: 359
+=== OUT ===
+--- bytes ---
+104 109 109 109 46 46 46 46 46
+--- string ---
+hmmm.....
+```
+
+Пример проверки исходного кода:
+```bash
+$ poetry run coverage run -m poetry run pytest . -v --update-goldens
+===================================================================== test session starts =====================================================================
+platform darwin -- Python 3.12.3, pytest-8.2.2, pluggy-1.5.0 -- /Users/ilya/Desktop/ITMO/АК/csa-lab3/venv/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /Users/ilya/Desktop/ITMO/АК/csa-lab3
+configfile: pyproject.toml
+plugins: golden-0.2.2
+collected 4 items
+
+src/golden_test.py::test_cpu[../golden/prob1.yml] PASSED                                                                                                [ 25%]
+src/golden_test.py::test_cpu[../golden/cat.yml] PASSED                                                                                                  [ 50%]
+src/golden_test.py::test_cpu[../golden/hello_user.yml] PASSED                                                                                           [ 75%]
+src/golden_test.py::test_cpu[../golden/hello_world.yml] PASSED                                                                                          [100%]
+
+====================================================================== 4 passed in 1.49s ======================================================================
+
+$ ruff format --check .
+9 files already formatted
+
+$ ruff check .
+All checks passed!
+```
+
 
 ```
 | ФИО                         | алг   | LoC | code инстр. | инстр. | такт  | вариант                                                              |
