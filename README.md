@@ -212,7 +212,7 @@
 - `dec` - декрементирвать значение
 
 ### ControlUnit
-![controlunit.jpg](docs/controlunit.png)
+![controlunit.jpg](docs/controlunit.jpg)
 
 Реализован в классе ControlUnit в модуле [control_unit](src/control_unit.py)
 - Hardwired
@@ -225,7 +225,8 @@
 - Остановка моделирования осуществляется при:
 - - исключении ValueError (были переданы некорректные данные)
 - - исключении SystemExit (выполнена инструкция halt)
-- - исключении BufferError (Буфер переполнен или пустой)
+- - исключении BufferError (буфер переполнен или пустой)
+
 ## Тестирование
 
 ```
