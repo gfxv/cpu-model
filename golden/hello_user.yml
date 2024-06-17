@@ -2037,20 +2037,20 @@ log: |
   DEBUG    root:control_unit.py:103 TICK: 4574 | dec  | ARG: -   | TYPE: none    | PC: 130 | ACC: 0   | DR: 0   | AR: 129 | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 4581 | st   | ARG: 22  | TYPE: raw     | PC: 131 | ACC: 0   | DR: 0   | AR: 22  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 4585 | jz   | ARG: 133 | TYPE: default | PC: 133 | ACC: 0   | DR: 133 | AR: 131 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4591 | ld   | ARG: 112 | TYPE: default | PC: 134 | ACC: 10  | DR: 10  | AR: 112 | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 4591 | ld   | ARG: 112 | TYPE: default | PC: 134 | ACC: 10  | DR: 10  | AR: 112 | N: False  | Z: False 
   INFO     root:data_path.py:94 OUT: 10
-  DEBUG    root:control_unit.py:103 TICK: 4598 | st   | ARG: 1   | TYPE: raw     | PC: 135 | ACC: 10  | DR: 10  | AR: 1   | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 4598 | st   | ARG: 1   | TYPE: raw     | PC: 135 | ACC: 10  | DR: 10  | AR: 1   | N: False  | Z: False 
   INFO     root:data_path.py:85 IN: 4
-  DEBUG    root:control_unit.py:103 TICK: 4604 | ld   | ARG: 1   | TYPE: default | PC: 136 | ACC: 4   | DR: 4   | AR: 1   | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4611 | st   | ARG: 115 | TYPE: raw     | PC: 137 | ACC: 4   | DR: 4   | AR: 115 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4618 | st   | ARG: 22  | TYPE: raw     | PC: 138 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4623 | ld   | ARG: 118 | TYPE: raw     | PC: 139 | ACC: 118 | DR: 118 | AR: 138 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4630 | st   | ARG: 116 | TYPE: raw     | PC: 140 | ACC: 118 | DR: 118 | AR: 116 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4637 | st   | ARG: 117 | TYPE: raw     | PC: 141 | ACC: 118 | DR: 118 | AR: 117 | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 4604 | ld   | ARG: 1   | TYPE: default | PC: 136 | ACC: 4   | DR: 4   | AR: 1   | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4611 | st   | ARG: 115 | TYPE: raw     | PC: 137 | ACC: 4   | DR: 4   | AR: 115 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4618 | st   | ARG: 22  | TYPE: raw     | PC: 138 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4623 | ld   | ARG: 118 | TYPE: raw     | PC: 139 | ACC: 118 | DR: 118 | AR: 138 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4630 | st   | ARG: 116 | TYPE: raw     | PC: 140 | ACC: 118 | DR: 118 | AR: 116 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4637 | st   | ARG: 117 | TYPE: raw     | PC: 141 | ACC: 118 | DR: 118 | AR: 117 | N: False  | Z: False 
   INFO     root:data_path.py:85 IN: 73
-  DEBUG    root:control_unit.py:103 TICK: 4643 | ld   | ARG: 1   | TYPE: default | PC: 142 | ACC: 73  | DR: 73  | AR: 1   | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4651 | st   | ARG: 117 | TYPE: default | PC: 143 | ACC: 73  | DR: 73  | AR: 118 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4657 | ld   | ARG: 117 | TYPE: default | PC: 144 | ACC: 118 | DR: 118 | AR: 117 | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 4643 | ld   | ARG: 1   | TYPE: default | PC: 142 | ACC: 73  | DR: 73  | AR: 1   | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4651 | st   | ARG: 117 | TYPE: default | PC: 143 | ACC: 73  | DR: 73  | AR: 118 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4657 | ld   | ARG: 117 | TYPE: default | PC: 144 | ACC: 118 | DR: 118 | AR: 117 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4661 | inc  | ARG: -   | TYPE: none    | PC: 145 | ACC: 119 | DR: 0   | AR: 144 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4668 | st   | ARG: 117 | TYPE: raw     | PC: 146 | ACC: 119 | DR: 119 | AR: 117 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4674 | ld   | ARG: 22  | TYPE: default | PC: 147 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: False 
@@ -2090,11 +2090,11 @@ log: |
   DEBUG    root:control_unit.py:103 TICK: 4846 | dec  | ARG: -   | TYPE: none    | PC: 148 | ACC: 0   | DR: 0   | AR: 147 | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 4853 | st   | ARG: 22  | TYPE: raw     | PC: 149 | ACC: 0   | DR: 0   | AR: 22  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 4857 | jz   | ARG: 151 | TYPE: default | PC: 151 | ACC: 0   | DR: 151 | AR: 149 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4862 | ld   | ARG: 104 | TYPE: raw     | PC: 152 | ACC: 104 | DR: 104 | AR: 151 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4869 | st   | ARG: 21  | TYPE: raw     | PC: 153 | ACC: 104 | DR: 104 | AR: 21  | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4875 | ld   | ARG: 104 | TYPE: default | PC: 154 | ACC: 7   | DR: 7   | AR: 104 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4882 | st   | ARG: 22  | TYPE: raw     | PC: 155 | ACC: 7   | DR: 7   | AR: 22  | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 4888 | ld   | ARG: 21  | TYPE: default | PC: 156 | ACC: 104 | DR: 104 | AR: 21  | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 4862 | ld   | ARG: 104 | TYPE: raw     | PC: 152 | ACC: 104 | DR: 104 | AR: 151 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4869 | st   | ARG: 21  | TYPE: raw     | PC: 153 | ACC: 104 | DR: 104 | AR: 21  | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4875 | ld   | ARG: 104 | TYPE: default | PC: 154 | ACC: 7   | DR: 7   | AR: 104 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4882 | st   | ARG: 22  | TYPE: raw     | PC: 155 | ACC: 7   | DR: 7   | AR: 22  | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 4888 | ld   | ARG: 21  | TYPE: default | PC: 156 | ACC: 104 | DR: 104 | AR: 21  | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4892 | inc  | ARG: -   | TYPE: none    | PC: 157 | ACC: 105 | DR: 0   | AR: 156 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4899 | st   | ARG: 21  | TYPE: raw     | PC: 158 | ACC: 105 | DR: 105 | AR: 21  | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 4907 | ld   | ARG: 21  | TYPE: ptr     | PC: 159 | ACC: 72  | DR: 72  | AR: 105 | N: False  | Z: False 
@@ -2170,14 +2170,14 @@ log: |
   DEBUG    root:control_unit.py:103 TICK: 5266 | dec  | ARG: -   | TYPE: none    | PC: 162 | ACC: 0   | DR: 0   | AR: 161 | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 5273 | st   | ARG: 22  | TYPE: raw     | PC: 163 | ACC: 0   | DR: 0   | AR: 22  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 5277 | jz   | ARG: 165 | TYPE: default | PC: 165 | ACC: 0   | DR: 165 | AR: 163 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5283 | ld   | ARG: 116 | TYPE: default | PC: 166 | ACC: 118 | DR: 118 | AR: 116 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5290 | st   | ARG: 21  | TYPE: raw     | PC: 167 | ACC: 118 | DR: 118 | AR: 21  | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5296 | ld   | ARG: 115 | TYPE: default | PC: 168 | ACC: 4   | DR: 4   | AR: 115 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5303 | st   | ARG: 22  | TYPE: raw     | PC: 169 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5311 | ld   | ARG: 21  | TYPE: ptr     | PC: 170 | ACC: 73  | DR: 73  | AR: 118 | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 5283 | ld   | ARG: 116 | TYPE: default | PC: 166 | ACC: 118 | DR: 118 | AR: 116 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 5290 | st   | ARG: 21  | TYPE: raw     | PC: 167 | ACC: 118 | DR: 118 | AR: 21  | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 5296 | ld   | ARG: 115 | TYPE: default | PC: 168 | ACC: 4   | DR: 4   | AR: 115 | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 5303 | st   | ARG: 22  | TYPE: raw     | PC: 169 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 5311 | ld   | ARG: 21  | TYPE: ptr     | PC: 170 | ACC: 73  | DR: 73  | AR: 118 | N: False  | Z: False 
   INFO     root:data_path.py:94 OUT: 73
-  DEBUG    root:control_unit.py:103 TICK: 5318 | st   | ARG: 1   | TYPE: raw     | PC: 171 | ACC: 73  | DR: 73  | AR: 1   | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5324 | ld   | ARG: 21  | TYPE: default | PC: 172 | ACC: 118 | DR: 118 | AR: 21  | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 5318 | st   | ARG: 1   | TYPE: raw     | PC: 171 | ACC: 73  | DR: 73  | AR: 1   | N: False  | Z: False 
+  DEBUG    root:control_unit.py:103 TICK: 5324 | ld   | ARG: 21  | TYPE: default | PC: 172 | ACC: 118 | DR: 118 | AR: 21  | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5328 | inc  | ARG: -   | TYPE: none    | PC: 173 | ACC: 119 | DR: 0   | AR: 172 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5335 | st   | ARG: 21  | TYPE: raw     | PC: 174 | ACC: 119 | DR: 119 | AR: 21  | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5341 | ld   | ARG: 22  | TYPE: default | PC: 175 | ACC: 4   | DR: 4   | AR: 22  | N: False  | Z: False 
@@ -2217,7 +2217,7 @@ log: |
   DEBUG    root:control_unit.py:103 TICK: 5516 | dec  | ARG: -   | TYPE: none    | PC: 176 | ACC: 0   | DR: 0   | AR: 175 | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 5523 | st   | ARG: 22  | TYPE: raw     | PC: 177 | ACC: 0   | DR: 0   | AR: 22  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 5527 | jz   | ARG: 179 | TYPE: default | PC: 179 | ACC: 0   | DR: 179 | AR: 177 | N: False  | Z: True  
-  DEBUG    root:control_unit.py:103 TICK: 5532 | ld   | ARG: 113 | TYPE: raw     | PC: 180 | ACC: 113 | DR: 113 | AR: 179 | N: False  | Z: True  
+  DEBUG    root:control_unit.py:103 TICK: 5532 | ld   | ARG: 113 | TYPE: raw     | PC: 180 | ACC: 113 | DR: 113 | AR: 179 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5536 | inc  | ARG: -   | TYPE: none    | PC: 181 | ACC: 114 | DR: 0   | AR: 180 | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5543 | st   | ARG: 21  | TYPE: raw     | PC: 182 | ACC: 114 | DR: 114 | AR: 21  | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 5551 | ld   | ARG: 21  | TYPE: ptr     | PC: 183 | ACC: 33  | DR: 33  | AR: 114 | N: False  | Z: False 
