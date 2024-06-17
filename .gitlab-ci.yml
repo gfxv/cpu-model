@@ -10,7 +10,7 @@ test-lab3:
   script:
     - python3 -m pip install --upgrade pip
     - pip install -r requirements.txt
-    - coverage run -m poetry run pytest . -v --update-goldens
+    - coverage run -m pytest --verbose
     - coverage report -m
 
 lint-lab3:
