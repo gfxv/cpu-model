@@ -35,6 +35,7 @@
            | cmp
            | jmp
            | jz
+           | nop
            | hlt
 
 <arg> ::= integer
