@@ -4,7 +4,7 @@ from data_path import DataPath
 from isa import BRANCH_OPCODES, OPCODE
 from signals import Signal
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)s:%(name)s | %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)s | %(message)s")
 
 
 class ControlUnit:
