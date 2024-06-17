@@ -192,6 +192,8 @@
 
 Реализован в классе DataPath в модуле [data_path](src/data_path.py)
 
+`Address Code Decoder` определяет к какому устройству мы обращаемся (память или ВУ)
+
 #### Сигналы DataPath
 - `latch_pc` - защёлкнуть PC
 - `latch_acc` - защёлкнуть ACC
