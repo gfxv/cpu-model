@@ -96,7 +96,7 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
                 #     word_size = buff_size
                 # arg_type = "word"
                 # offset += word_size
-                if "\"" in arg:
+                if '"' in arg:
                     string = reserve_string(arg.strip('"'), pc)
                     code += string
                     continue
@@ -132,6 +132,7 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
 
     return labels, code
 
+
 def reserve_string(string: str, curr_index: int) -> list[dict]:
     filler_nops = []
 
@@ -139,13 +140,13 @@ def reserve_string(string: str, curr_index: int) -> list[dict]:
         "index": curr_index,
         "opcode": "nop",
         "arg": len(string),
-        "arg_type": "data"
+        "arg_type": "data",
     }
     filler_nops.append(string_length)
 
     for s in range(len(string)):
         nop = {
-            "index": s + curr_index + 1, # +1 because of string length
+            "index": s + curr_index + 1,  # +1 because of string length
             "opcode": "nop",
             "arg": ord(string[s]),
             "arg_type": "data",
