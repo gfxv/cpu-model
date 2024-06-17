@@ -169,8 +169,7 @@
 - `arg_type` - тип аргумента
 
 ## Транслятор
-`Интерфейс командной строки: translator.py <input_file> <target_file>`
-
+Интерфейс командной строки: `translator.py <input_file> <target_file>`
 
 Реализовано в модуле: [translator](src/translator.py)
 
@@ -184,9 +183,20 @@
 Метки в машинном коде, __не сохраняются__ . Метки, использованные в качестве операнда, преобразуются к адресам команд
 
 ## Модель процессора
+Интерфейс командной строки: `machine.py <code> <input>`
+
+Реализовано в модуле: [machine](src/machine.py)
+
+### DataPath
+![datapath.jpg](docs/datapath.jpg)
+
+`// TODO`
+
+### ControlUnit
+
+`// TODO`
 
 ## Тестирование
-
 
 ```
 | ФИО                         | алг   | LoC | code инстр. | инстр. | такт  | вариант                                                              |
