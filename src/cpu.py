@@ -1,6 +1,8 @@
+import sys
+
 from control_unit import ControlUnit
 from data_path import DataPath
-import sys
+
 
 class CPU:
     def __init__(self):
