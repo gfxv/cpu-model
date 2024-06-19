@@ -79,19 +79,19 @@ class DataPath:
     def read_mem(self):
         if AddressDecoder.is_io(self.ar):
             if len(self.input_buffer) == 0:
-                raise BufferError("Input buffer is empty")
+                raise BufferError("Input buffer is empty!")
             symbol = self.input_buffer.pop(0)
             self.dr["arg"] = symbol
-            logging.info(f"IN: {symbol}")
+            logging.info(f"IN: {symbol} ({chr(symbol)})")
             return
         self.dr = self.memory[int(self.ar)].copy()
 
     def write_mem(self):
         if AddressDecoder.is_io(self.ar):
             if len(self.output_buffer) >= DataPath.MAX_BUFFER_SIZE:
-                raise BufferError("Output buffer overflow")
+                raise BufferError("Output buffer overflow!")
             self.output_buffer.append(self.dr["arg"])
-            logging.info(f"OUT: {self.dr["arg"]}")
+            logging.info(f"OUT: {self.dr["arg"]} ({chr(self.dr["arg"])})")
             return
         self.memory[int(self.ar)] = self.dr
 

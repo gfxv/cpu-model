@@ -13051,6 +13051,6 @@ log: |
   DEBUG    root:control_unit.py:103 TICK: 65746 | cmp  | ARG: 26  | TYPE: default | PC: 31  | ACC: 1000 | DR: 1000 | AR: 26  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 65750 | jz   | ARG: 45  | TYPE: default | PC: 45  | ACC: 1000 | DR: 45  | AR: 31  | N: False  | Z: True  
   DEBUG    root:control_unit.py:103 TICK: 65756 | ld   | ARG: 28  | TYPE: default | PC: 46  | ACC: 466 | DR: 466 | AR: 28  | N: False  | Z: False 
-  INFO     root:data_path.py:94 OUT: 466
+  INFO     root:data_path.py:94 OUT: 466 (ǒ)
   DEBUG    root:control_unit.py:103 TICK: 65763 | st   | ARG: 1   | TYPE: raw     | PC: 47  | ACC: 466 | DR: 466 | AR: 1   | N: False  | Z: False 
   DEBUG    root:control_unit.py:103 TICK: 65767 | hlt  | ARG: -   | TYPE: none    | PC: 48  | ACC: 466 | DR: 0   | AR: 47  | N: False  | Z: False 

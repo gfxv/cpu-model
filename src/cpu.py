@@ -1,6 +1,6 @@
 from control_unit import ControlUnit
 from data_path import DataPath
-
+import sys
 
 class CPU:
     def __init__(self):
@@ -30,6 +30,10 @@ class CPU:
     def run(self):
         try:
             self.control_unit.run()
+        except BufferError as e:
+            print(str(e))
+            print("Terminating...")
+            sys.exit(0)
         except SystemExit:
             return self.result()
 
