@@ -82,7 +82,7 @@ class DataPath:
                 raise BufferError("Input buffer is empty!")
             symbol = self.input_buffer.pop(0)
             self.dr["arg"] = symbol
-            logging.info(f"IN: {symbol} ({chr(symbol)})")
+            logging.info(f"IN: {symbol}")
             return
         self.dr = self.memory[int(self.ar)].copy()
 
@@ -91,7 +91,7 @@ class DataPath:
             if len(self.output_buffer) >= DataPath.MAX_BUFFER_SIZE:
                 raise BufferError("Output buffer overflow!")
             self.output_buffer.append(self.dr["arg"])
-            logging.info(f"OUT: {self.dr["arg"]} ({chr(self.dr["arg"])})")
+            logging.info(f"OUT: {self.dr["arg"]}")
             return
         self.memory[int(self.ar)] = self.dr
 
