@@ -11,7 +11,7 @@ def main(args) -> None:
 
     try:
         instructions, out, ticks = cpu.run()
-    
+
         print(f"Instructions: {instructions}")
         print(f"Ticks: {ticks}")
         print("=== OUT ===")
