@@ -287,113 +287,81 @@ _start:
 $ python3 src/translator.py example/cat.asm out/cat.json
 $ cat out/cat.json
 [
-  {"index": 0, "opcode": "jmp", "arg": "7", "arg_type": "default"},
-  {"index": 6, "opcode": "nop", "arg": 0, "arg_type": "data"},
-  {"index": 7, "opcode": "ld", "arg": "1", "arg_type": "default"},
-  {"index": 8, "opcode": "st", "arg": 6, "arg_type": "raw"},
-  {"index": 9, "opcode": "ld", "arg": "1", "arg_type": "default"},
-  {"index": 10, "opcode": "st", "arg": "1", "arg_type": "raw"},
-  {"index": 11, "opcode": "ld", "arg": 6, "arg_type": "default"},
-  {"index": 12, "opcode": "dec", "arg_type": "none", "arg": 0},
-  {"index": 13, "opcode": "st", "arg": 6, "arg_type": "raw"},
-  {"index": 14, "opcode": "jz", "arg": 16, "arg_type": "default"},
-  {"index": 15, "opcode": "jmp", "arg": 9, "arg_type": "default"},
-  {"index": 16, "opcode": "hlt", "arg_type": "none", "arg": 0}
+  {"index": 0, "opcode": "jmp", "arg": "6", "arg_type": "default"},
+  {"index": 6, "opcode": "ld", "arg": "1", "arg_type": "default"},
+  {"index": 7, "opcode": "st", "arg": "1", "arg_type": "raw"},
+  {"index": 8, "opcode": "jmp", "arg": 6, "arg_type": "default"}
 ]
 
 $ python3 src/machine.py out/cat.json example/input.txt
-DEBUG | TICK: 4    | jmp  | ARG: 7   | TYPE: default | PC: 7   | ACC: 0   | DR: 7   | AR: 0   | N: False  | Z: False
-INFO | IN: 9
-DEBUG | TICK: 10   | ld   | ARG: 1   | TYPE: default | PC: 8   | ACC: 9   | DR: 9   | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 17   | st   | ARG: 6   | TYPE: raw     | PC: 9   | ACC: 9   | DR: 9   | AR: 6   | N: False  | Z: False
-INFO | IN: 104
-DEBUG | TICK: 23   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 104 | DR: 104 | AR: 1   | N: False  | Z: False
-INFO | OUT: 104
-DEBUG | TICK: 30   | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 104 | DR: 104 | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 36   | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 9   | DR: 9   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 40   | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 8   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 47   | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 8   | DR: 8   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 51   | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 8   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 55   | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 8   | DR: 9   | AR: 15  | N: False  | Z: False
+DEBUG | TICK: 4    | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 0   | DR: 6   | AR: 0   | N: False  | Z: False
+INFO | IN: 76
+DEBUG | TICK: 10   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 76  | DR: 76  | AR: 1   | N: False  | Z: False
+INFO | OUT: 76
+DEBUG | TICK: 17   | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 76  | DR: 76  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 21   | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 76  | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 111
+DEBUG | TICK: 27   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 111 | DR: 111 | AR: 1   | N: False  | Z: False
+INFO | OUT: 111
+DEBUG | TICK: 34   | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 111 | DR: 111 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 38   | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 111 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 114
+DEBUG | TICK: 44   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 114 | DR: 114 | AR: 1   | N: False  | Z: False
+INFO | OUT: 114
+DEBUG | TICK: 51   | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 114 | DR: 114 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 55   | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 114 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 101
+DEBUG | TICK: 61   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 101 | DR: 101 | AR: 1   | N: False  | Z: False
+INFO | OUT: 101
+DEBUG | TICK: 68   | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 101 | DR: 101 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 72   | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 101 | DR: 6   | AR: 8   | N: False  | Z: False
 INFO | IN: 109
-DEBUG | TICK: 61   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 78   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
 INFO | OUT: 109
-DEBUG | TICK: 68   | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 74   | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 8   | DR: 8   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 78   | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 7   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 85   | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 7   | DR: 7   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 89   | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 7   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 93   | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 7   | DR: 9   | AR: 15  | N: False  | Z: False
+DEBUG | TICK: 85   | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 89   | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 109 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 32
+DEBUG | TICK: 95   | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 32  | DR: 32  | AR: 1   | N: False  | Z: False
+INFO | OUT: 32
+DEBUG | TICK: 102  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 32  | DR: 32  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 106  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 32  | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 105
+DEBUG | TICK: 112  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 105 | DR: 105 | AR: 1   | N: False  | Z: False
+INFO | OUT: 105
+DEBUG | TICK: 119  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 105 | DR: 105 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 123  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 105 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 112
+DEBUG | TICK: 129  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 112 | DR: 112 | AR: 1   | N: False  | Z: False
+INFO | OUT: 112
+DEBUG | TICK: 136  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 112 | DR: 112 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 140  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 112 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 115
+DEBUG | TICK: 146  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 115 | DR: 115 | AR: 1   | N: False  | Z: False
+INFO | OUT: 115
+DEBUG | TICK: 153  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 115 | DR: 115 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 157  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 115 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 117
+DEBUG | TICK: 163  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 117 | DR: 117 | AR: 1   | N: False  | Z: False
+INFO | OUT: 117
+DEBUG | TICK: 170  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 117 | DR: 117 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 174  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 117 | DR: 6   | AR: 8   | N: False  | Z: False
 INFO | IN: 109
-DEBUG | TICK: 99   | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 180  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
 INFO | OUT: 109
-DEBUG | TICK: 106  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 112  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 7   | DR: 7   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 116  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 6   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 123  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 6   | DR: 6   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 127  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 6   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 131  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 6   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 109
-DEBUG | TICK: 137  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
-INFO | OUT: 109
-DEBUG | TICK: 144  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 150  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 6   | DR: 6   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 154  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 5   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 161  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 5   | DR: 5   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 165  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 5   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 169  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 5   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 46
-DEBUG | TICK: 175  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-INFO | OUT: 46
-DEBUG | TICK: 182  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 188  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 5   | DR: 5   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 192  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 4   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 199  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 4   | DR: 4   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 203  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 4   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 207  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 4   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 46
-DEBUG | TICK: 213  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-INFO | OUT: 46
-DEBUG | TICK: 220  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 226  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 4   | DR: 4   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 230  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 3   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 237  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 3   | DR: 3   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 241  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 3   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 245  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 3   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 46
-DEBUG | TICK: 251  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-INFO | OUT: 46
-DEBUG | TICK: 258  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 264  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 3   | DR: 3   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 268  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 2   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 275  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 2   | DR: 2   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 279  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 2   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 283  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 2   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 46
-DEBUG | TICK: 289  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-INFO | OUT: 46
-DEBUG | TICK: 296  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 302  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 2   | DR: 2   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 306  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 1   | DR: 0   | AR: 12  | N: False  | Z: False
-DEBUG | TICK: 313  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 1   | DR: 1   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 317  | jz   | ARG: 16  | TYPE: default | PC: 15  | ACC: 1   | DR: 16  | AR: 14  | N: False  | Z: False
-DEBUG | TICK: 321  | jmp  | ARG: 9   | TYPE: default | PC: 9   | ACC: 1   | DR: 9   | AR: 15  | N: False  | Z: False
-INFO | IN: 46
-DEBUG | TICK: 327  | ld   | ARG: 1   | TYPE: default | PC: 10  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-INFO | OUT: 46
-DEBUG | TICK: 334  | st   | ARG: 1   | TYPE: raw     | PC: 11  | ACC: 46  | DR: 46  | AR: 1   | N: False  | Z: False
-DEBUG | TICK: 340  | ld   | ARG: 6   | TYPE: default | PC: 12  | ACC: 1   | DR: 1   | AR: 6   | N: False  | Z: False
-DEBUG | TICK: 344  | dec  | ARG: -   | TYPE: none    | PC: 13  | ACC: 0   | DR: 0   | AR: 12  | N: False  | Z: True
-DEBUG | TICK: 351  | st   | ARG: 6   | TYPE: raw     | PC: 14  | ACC: 0   | DR: 0   | AR: 6   | N: False  | Z: True
-DEBUG | TICK: 355  | jz   | ARG: 16  | TYPE: default | PC: 16  | ACC: 0   | DR: 16  | AR: 14  | N: False  | Z: True
-DEBUG | TICK: 359  | hlt  | ARG: -   | TYPE: none    | PC: 17  | ACC: 0   | DR: 0   | AR: 16  | N: False  | Z: True
-Instructions: 66
-Ticks: 359
-=== OUT ===
---- bytes ---
-104 109 109 109 46 46 46 46 46
---- string ---
-hmmm.....
+DEBUG | TICK: 187  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 109 | DR: 109 | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 191  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 109 | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 32
+DEBUG | TICK: 197  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 32  | DR: 32  | AR: 1   | N: False  | Z: False
+INFO | OUT: 32
+DEBUG | TICK: 204  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 32  | DR: 32  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 208  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 32  | DR: 6   | AR: 8   | N: False  | Z: False
+INFO | IN: 63
+DEBUG | TICK: 214  | ld   | ARG: 1   | TYPE: default | PC: 7   | ACC: 63  | DR: 63  | AR: 1   | N: False  | Z: False
+INFO | OUT: 63
+DEBUG | TICK: 221  | st   | ARG: 1   | TYPE: raw     | PC: 8   | ACC: 63  | DR: 63  | AR: 1   | N: False  | Z: False
+DEBUG | TICK: 225  | jmp  | ARG: 6   | TYPE: default | PC: 6   | ACC: 63  | DR: 6   | AR: 8   | N: False  | Z: False
+Input buffer is empty!
+Terminating...
 ```
 
 Пример проверки исходного кода:
@@ -425,6 +393,6 @@ All checks passed!
 ```
 | ФИО                         | алг   | LoC | code инстр. | инстр. | такт  | вариант                                                              |
 | Рудкевич Илья Александрович | hello | 25  | 19          | 135    | 770   | asm | acc | neum | hw | instr | struct | stream | mem | pstr | prob1 |
-| Рудкевич Илья Александрович | cat   | 16  | 12          | 66     | 359   | asm | acc | neum | hw | instr | struct | stream | mem | pstr | prob1 |
+| Рудкевич Илья Александрович | cat   | 8   | 12          | 40     | 225   | asm | acc | neum | hw | instr | struct | stream | mem | pstr | prob1 |
 | Рудкевич Илья Александрович | prob1 | 31  | 23          | 12860  | 65767 | asm | acc | neum | hw | instr | struct | stream | mem | pstr | prob1 |
 ```
