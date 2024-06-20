@@ -27,10 +27,6 @@ class CPU:
     def run(self):
         try:
             self.control_unit.run()
-        except BufferError as e:
-            print(str(e))
-            print("Terminating...")
-            sys.exit(0)
         except SystemExit:
             return self.result()
 

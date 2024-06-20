@@ -4,7 +4,7 @@ import sys
 
 import isa
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+# logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 COMMENT_SYMBOL = ";"
 START_LABEL = "_start"

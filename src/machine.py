@@ -9,15 +9,19 @@ def main(args) -> None:
     cpu = CPU()
     cpu.load_program_to_memory(program, input_data)
 
-    instructions, out, ticks = cpu.run()
-
-    print(f"Instructions: {instructions}")
-    print(f"Ticks: {ticks}")
-    print("=== OUT ===")
-    print("--- bytes ---")
-    print(" ".join(list(map(str, out))))
-    print("--- string ---")
-    print("".join(list(map(lambda c: chr(c), out))))
+    try:
+        instructions, out, ticks = cpu.run()
+    
+        print(f"Instructions: {instructions}")
+        print(f"Ticks: {ticks}")
+        print("=== OUT ===")
+        print("--- bytes ---")
+        print(" ".join(list(map(str, out))))
+        print("--- string ---")
+        print("".join(list(map(lambda c: chr(c), out))))
+    except BufferError as e:
+        print(str(e))
+        print("Terminating...", end="")
 
 
 def load_input(args) -> tuple:

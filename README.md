@@ -264,7 +264,7 @@ lint-lab3:
 Пример использования и журнал работы процессора на примере `cat`:
 ```bash
 $ cat example/input.txt
-9hmmm.....
+Lorem ipsum ?
 
 $ cat example/cat.asm
 org 5
