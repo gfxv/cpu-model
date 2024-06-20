@@ -1,5 +1,3 @@
-import sys
-
 from control_unit import ControlUnit
 from data_path import DataPath
 
