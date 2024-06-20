@@ -63,7 +63,7 @@ class ALU:
 class DataPath:
     MEMORY_SIZE = 1024
     MAX_BUFFER_SIZE = 256
-    MAX_INT = 4096
+    MAX_INT = 2**18
 
     def __init__(self):
         self.alu = ALU(DataPath.MAX_INT)

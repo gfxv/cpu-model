@@ -6,7 +6,7 @@ max_number:
     int 1000
 number:
     int 1
-counter:
+final_sum:
     int 0
 
 
@@ -33,12 +33,12 @@ _start:
         jmp loop     ; jump back to loop
 
     inc_sum:
-        ld counter    ; load counter
-        inc
-        st &counter   ; save (update) counter
+        ld final_sum    ; load final sum
+        add number      ; add number
+        st &final_sum   ; save (update) final sum
         jmp continue
 
     stop:
-        ld counter
+        ld final_sum
         st #1
         hlt ; stop
