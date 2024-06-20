@@ -83,19 +83,6 @@ def parse_asm(lines: list[str]) -> tuple[dict, list]:
             arg_type = "default"
 
             if opcode == isa.OPCODE.WORD:
-                # word_size = 0
-                # if '"' in arg:
-                #     # handles `word "some text"`
-                #     arg = arg.strip('"')
-                #     word_size = len(arg)
-
-                # else:
-                #     # handles `word N` - allocates N cells
-                #     buff_size = int(arg)
-                #     arg = "-" * buff_size
-                #     word_size = buff_size
-                # arg_type = "word"
-                # offset += word_size
                 if '"' in arg:
                     string = reserve_string(arg.strip('"'), pc)
                     code += string

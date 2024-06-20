@@ -19,7 +19,7 @@ class AddressDecoder:
 
 
 class ALU:
-    def __init__(self):
+    def __init__(self, max_value):
         # left: { ACC | PC }
         self.left = None
         # right: { DR | CR }
@@ -27,6 +27,7 @@ class ALU:
         self.value = None
         self.status_n = False
         self.status_z = False
+        self.max_value = max_value
 
     def execute(self, signal: Signal):
         match signal:
@@ -54,7 +55,7 @@ class ALU:
         self.value = result
 
     def set_result(self, value: int):
-        self.value = value
+        self.value = value % self.max_value
         self.status_n = True if value < 0 else False
         self.status_z = True if value == 0 else False
 
@@ -62,9 +63,10 @@ class ALU:
 class DataPath:
     MEMORY_SIZE = 1024
     MAX_BUFFER_SIZE = 256
+    MAX_INT = 4096
 
     def __init__(self):
-        self.alu = ALU()
+        self.alu = ALU(DataPath.MAX_INT)
         self.acc = 0
         self.pc = 0
         self.dr = None

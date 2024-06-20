@@ -14,19 +14,14 @@ class CPU:
         self.control_unit.data_path.input_buffer = (
             input_data if input_data is not None else []
         )
+
+        MAX_VALUE = self.control_unit.data_path.MAX_INT
         for instruction in program:
             addr = instruction["index"]
-            # if instruction["arg_type"] == "word":
-            #     self.control_unit.data_path.memory[addr] = len(instruction["arg"])
-            #     for i in range(len(instruction["arg"])):
-            #         self.control_unit.data_path.memory[addr + i + 1] = ord(
-            #             instruction["arg"][i]
-            #         )
-            #     continue
-            # if instruction["arg_type"] == "int":
-            #     self.control_unit.data_path.memory[addr] = int(instruction["arg"])
-            #     continue
-
+            if int(instruction["arg"]) > MAX_VALUE:
+                raise ValueError(
+                    f"Operand can't be greater than {MAX_VALUE} \nindex: {addr}, instruction: {instruction["opcode"]}"
+                )
             self.control_unit.data_path.memory[addr] = instruction
 
     def run(self):
