@@ -38,7 +38,10 @@ def read_program(path) -> dict:
 def read_input(path) -> list:
     with open(path, "r") as file:
         data = list(map(lambda sym: ord(sym), list(file.read())))
-        data[0] = int(chr(data[0]))
+        try:
+            data[0] = int(chr(data[0]))
+        except ValueError:
+            pass
         return data
 
 
